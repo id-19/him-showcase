@@ -1,0 +1,192 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>HIM</title>
+<style>
+  :root {
+    --bg: #f4f7fa;
+    --surface: #ffffff;
+    --fg: #0f1a2b;
+    --muted: #5a6880;
+    --border: #dbe3ee;
+    --accent: #0e7490;
+    --accent-soft: #e0f2f5;
+    --good: #1b7f5a;
+    --warn: #a4621a;
+    --code-bg: #eef2f7;
+    --radius: 10px;
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Manrope", system-ui, sans-serif;
+    --font-code: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b1220;
+      --surface: #121c2e;
+      --fg: #e7eef7;
+      --muted: #9aaac0;
+      --border: #23314a;
+      --accent: #38bdf8;
+      --accent-soft: #0f2a3a;
+      --good: #4ade80;
+      --warn: #fbbf24;
+      --code-bg: #0f1724;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1220;
+    --surface: #121c2e;
+    --fg: #e7eef7;
+    --muted: #9aaac0;
+    --border: #23314a;
+    --accent: #38bdf8;
+    --accent-soft: #0f2a3a;
+    --good: #4ade80;
+    --warn: #fbbf24;
+    --code-bg: #0f1724;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 24px 64px;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
+  header.hero { padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .eyebrow { font-family: var(--font-code); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+  h1 { font-family: var(--font-display); font-size: clamp(40px, 8vw, 84px); line-height: 1.05; margin: 0 0 16px; font-weight: 500; text-wrap: balance; }
+  .thesis { font-size: 20px; max-width: 720px; color: var(--fg); margin: 0 0 24px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { font-family: var(--font-code); font-size: 12px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--muted); }
+  h2 { font-family: var(--font-display); font-size: 30px; margin: 48px 0 16px; font-weight: 500; text-wrap: balance; }
+  h3 { font-size: 18px; margin: 0 0 6px; font-weight: 600; }
+  p { margin: 0 0 12px; max-width: 72ch; }
+  section { margin-bottom: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; min-width: 0; }
+  .card p { color: var(--muted); font-size: 14px; margin: 0; }
+  .card .tag { font-family: var(--font-code); font-size: 11px; color: var(--accent); margin-bottom: 8px; }
+  .flow { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-family: var(--font-code); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  td code { font-family: var(--font-code); font-size: 12px; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; }
+  .mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .security-list { display: grid; gap: 8px; }
+  .security-item { display: flex; gap: 10px; align-items: baseline; }
+  .security-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-top: 8px; flex: 0 0 auto; }
+  footer { border-top: 1px solid var(--border); padding-top: 24px; color: var(--muted); font-size: 13px; font-family: var(--font-code); }
+  @media (max-width: 600px) { h1 { font-size: 44px; } .thesis { font-size: 18px; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Personal agent · on-device or EC2 · local-first</p>
+    <h1>HIM</h1>
+    <p class="thesis">A privacy-preserving personal agent with a deliberately small UI and an engineered harness: routing, environments, sandboxed execution, hybrid memory, and parallel sub-agents. No data leaves the boundary you choose.</p>
+    <div class="pill-row">
+      <span class="pill">Local-first</span>
+      <span class="pill">Boundary-respecting</span>
+      <span class="pill">RLM-style control flow</span>
+      <span class="pill">MCP tool bridge</span>
+      <span class="pill">Sandboxed REPL</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>What it is</h2>
+    <p>HIM is a personal agent designed for ownership: the model, memory, tools, and conversation history run where you decide they run. The interface stays simple. The engineering sits in the harness that routes each query, sets up queryable environments instead of stuffing context into prompts, executes generated code in a sandbox, and fuses semantic and lexical retrieval. The result is an agent that handles large personal datasets without blowing up the parent context window or leaking data.</p>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <div class="grid">
+      <div class="card"><div class="tag">01 · Routing</div><h3>Query Router</h3><p>Classifies each query by tool count, reasoning depth, privacy sensitivity, and complexity, then selects local, cloud, or recursive execution.</p></div>
+      <div class="card"><div class="tag">02 · Context</div><h3>Environment Manager</h3><p>Injects conversation history, memory, and preferences as queryable objects into the REPL globals. Data stays external to the prompt.</p></div>
+      <div class="card"><div class="tag">03 · Inference</div><h3>Model Executor</h3><p>Local Qwen 3 8B stays loaded in VRAM with an idle timeout. Cloud providers cascade on rate limits. Prompts stay near one thousand tokens.</p></div>
+      <div class="card"><div class="tag">04 · Execution</div><h3>Python REPL</h3><p>Sandboxed Docker container with seccomp, read-only filesystem, memory limit, and timeout. An answer dict persists across code blocks.</p></div>
+      <div class="card"><div class="tag">05 · Tools</div><h3>MCP Bridge</h3><p>Lazy-loads MCP servers as Python modules via a bridge with getattr hooks. Three concurrent servers max, LRU eviction after inactivity.</p></div>
+      <div class="card"><div class="tag">06 · Memory</div><h3>Hybrid Memory</h3><p>ChromaDB vectors plus SQLite FTS5, fused with reciprocal rank fusion. Handles paraphrase and exact identifiers in the same query.</p></div>
+      <div class="card"><div class="tag">07 · Scale</div><h3>Sub-Agent System</h3><p>Parallel isolated LLM workers via llm_batch. Each sees a single prompt, returns a summary, and never inherits parent history. Twenty-five to one compression.</p></div>
+      <div class="card"><div class="tag">08 · Audit</div><h3>Response Handler</h3><p>Formats output, stores the turn in both memory stores, and logs latency, model, tokens, cost, and success to an audit table.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Query data flow</h2>
+    <div class="flow">
+      <pre class="mermaid">
+flowchart LR
+  U[User query] --> R[Query Router]
+  R --> E[Environment Manager]
+  E --> M[Model Executor]
+  M --> C[Generated code]
+  C --> P[Python REPL]
+  P --> B[MCP Bridge]
+  B --> T[Tools: mail, chat, files, calendar]
+  T --> P
+  P --> H[Response Handler]
+  H --> MEM[(Vector + Lexical Memory)]
+  H --> OUT[Answer to user]
+      </pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>Security layers</h2>
+    <div class="security-list">
+      <div class="security-item"><span class="dot"></span><div><strong>Docker isolation.</strong> Secomp-filtered container, read-only filesystem, two-hundred-fifty-megabyte tempfs, five-hundred-megabyte memory cap.</div></div>
+      <div class="security-item"><span class="dot"></span><div><strong>Network allowlist.</strong> Container reaches only MCP servers. No general outbound access from generated code.</div></div>
+      <div class="security-item"><span class="dot"></span><div><strong>Execution timeout.</strong> Thirty seconds per code block, one second MCP startup expectation, deterministic abort.</div></div>
+      <div class="security-item"><span class="dot"></span><div><strong>Credential hygiene.</strong> OAuth tokens live in the OS keyring. Environment variables are fallbacks only.</div></div>
+      <div class="security-item"><span class="dot"></span><div><strong>Resource cap.</strong> At most three concurrent MCP servers per session, LRU-evicted to stay within two to three gigabytes.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Performance targets</h2>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Metric</th><th>Target</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Simple query latency</td><td>less than 2 s</td><td>Feels instant for factual questions.</td></tr>
+          <tr><td>Complex query latency</td><td>less than 10 s</td><td>Acceptable for multi-step reasoning.</td></tr>
+          <tr><td>MCP server startup</td><td>less than 1 s</td><td>Lazy loading never blocks interaction.</td></tr>
+          <tr><td>Memory search</td><td>less than 100 ms</td><td>Fast enough to stay out of the critical path.</td></tr>
+          <tr><td>Sub-agent spawn</td><td>less than 500 ms</td><td>Overhead below parallelization benefit.</td></tr>
+          <tr><td>Local model load</td><td>less than 5 s</td><td>One-time cost, then persists in VRAM.</td></tr>
+          <tr><td>Cost per query</td><td>less than 0.01 USD</td><td>Sustainable at roughly one hundred queries per day.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tools in the loop</h2>
+    <div class="grid">
+      <div class="card"><h3>Gmail</h3><p>Search, read, send, labels. OAuth2 from keyring. Rate-limit aware.</p></div>
+      <div class="card"><h3>Slack</h3><p>Message search, threads, send. Bot or user OAuth.</p></div>
+      <div class="card"><h3>Calendar</h3><p>Events in ISO 8601 with timezone. Create, update, delete.</p></div>
+      <div class="card"><h3>Filesystem</h3><p>Read and write inside configured directories. Ten-megabyte file cap.</p></div>
+      <div class="card"><h3>GitHub</h3><p>Search repos, read files, list pull requests, create issues.</p></div>
+      <div class="card"><h3>Web search</h3><p>Brave Search fallback, plus fetch_url for page content.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Roadmap</h2>
+    <p>Post-MVP directions: encrypted multi-device memory sync, proactive background analysis, voice interruption with streaming text-to-speech, a visual dashboard for memory and audit logs, a plugin system for community MCP servers, and federated encrypted memory sharing.</p>
+  </section>
+
+  <footer>
+    HIM is specified and documented at the architecture level. Implementation is staged module by module, starting with the router, environment manager, and sandboxed REPL.
+  </footer>
+</div>
