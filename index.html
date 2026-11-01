@@ -3,43 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>HIM</title>
+<title>HIM Demo</title>
 <style>
   :root {
-    --bg: #f4f7fa;
-    --surface: #ffffff;
-    --fg: #0f1a2b;
-    --muted: #5a6880;
-    --border: #dbe3ee;
-    --accent: #0e7490;
-    --accent-soft: #e0f2f5;
-    --good: #1b7f5a;
-    --warn: #a4621a;
-    --code-bg: #eef2f7;
-    --radius: 10px;
-    --font-display: "Fraunces", Georgia, serif;
-    --font-body: "Manrope", system-ui, sans-serif;
-    --font-code: "JetBrains Mono", ui-monospace, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0b1220;
-      --surface: #121c2e;
-      --fg: #e7eef7;
-      --muted: #9aaac0;
-      --border: #23314a;
-      --accent: #38bdf8;
-      --accent-soft: #0f2a3a;
-      --good: #4ade80;
-      --warn: #fbbf24;
-      --code-bg: #0f1724;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
     --bg: #0b1220;
     --surface: #121c2e;
+    --panel: #0f1724;
     --fg: #e7eef7;
     --muted: #9aaac0;
     --border: #23314a;
@@ -47,157 +16,394 @@
     --accent-soft: #0f2a3a;
     --good: #4ade80;
     --warn: #fbbf24;
-    --code-bg: #0f1724;
-    color-scheme: dark;
+    --code-bg: #070d18;
+    --radius: 12px;
+    --font-body: "Manrope", system-ui, sans-serif;
+    --font-code: "JetBrains Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f4f7fa;
+      --surface: #ffffff;
+      --panel: #eef2f7;
+      --fg: #0f1a2b;
+      --muted: #5a6880;
+      --border: #dbe3ee;
+      --accent: #0e7490;
+      --accent-soft: #e0f2f5;
+      --good: #1b7f5a;
+      --warn: #a4621a;
+      --code-bg: #f7f9fc;
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f7fa;
+    --surface: #ffffff;
+    --panel: #eef2f7;
+    --fg: #0f1a2b;
+    --muted: #5a6880;
+    --border: #dbe3ee;
+    --accent: #0e7490;
+    --accent-soft: #e0f2f5;
+    --good: #1b7f5a;
+    --warn: #a4621a;
+    --code-bg: #f7f9fc;
+    color-scheme: light;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; }
+  html, body { margin: 0; height: 100%; }
   body {
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.5;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 24px 64px;
+    padding-block: 16px;
   }
+  .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 360px; gap: 16px; min-height: calc(100vh - 32px); }
+  @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } .side { order: 2; } }
+  header { grid-column: 1/-1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  h1 { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; font-family: var(--font-code); }
   a { color: var(--accent); }
-  .wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
-  header.hero { padding: 48px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
-  .eyebrow { font-family: var(--font-code); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
-  h1 { font-family: var(--font-display); font-size: clamp(40px, 8vw, 84px); line-height: 1.05; margin: 0 0 16px; font-weight: 500; text-wrap: balance; }
-  .thesis { font-size: 20px; max-width: 720px; color: var(--fg); margin: 0 0 24px; }
-  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pill { font-family: var(--font-code); font-size: 12px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--muted); }
-  h2 { font-family: var(--font-display); font-size: 30px; margin: 48px 0 16px; font-weight: 500; text-wrap: balance; }
-  h3 { font-size: 18px; margin: 0 0 6px; font-weight: 600; }
-  p { margin: 0 0 12px; max-width: 72ch; }
-  section { margin-bottom: 40px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; min-width: 0; }
-  .card p { color: var(--muted); font-size: 14px; margin: 0; }
-  .card .tag { font-family: var(--font-code); font-size: 11px; color: var(--accent); margin-bottom: 8px; }
-  .flow { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  th { font-family: var(--font-code); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-  td code { font-family: var(--font-code); font-size: 12px; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; }
-  .mermaid { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-  .security-list { display: grid; gap: 8px; }
-  .security-item { display: flex; gap: 10px; align-items: baseline; }
-  .security-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); margin-top: 8px; flex: 0 0 auto; }
-  footer { border-top: 1px solid var(--border); padding-top: 24px; color: var(--muted); font-size: 13px; font-family: var(--font-code); }
-  @media (max-width: 600px) { h1 { font-size: 44px; } .thesis { font-size: 18px; } }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; min-width: 0; }
+  .main { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+  .chat { flex: 1; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .messages { flex: 1; overflow: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px; min-height: 200px; }
+  .msg { padding: 10px 12px; border-radius: 10px; max-width: 90%; background: var(--panel); border: 1px solid var(--border); font-size: 14px; white-space: pre-wrap; }
+  .msg.user { align-self: flex-end; background: var(--accent-soft); border-color: var(--accent); }
+  .msg.assistant { align-self: flex-start; }
+  .msg .label { font-family: var(--font-code); font-size: 10px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+  .inputrow { display: flex; gap: 8px; }
+  input[type=text] { flex: 1; background: var(--panel); color: var(--fg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-family: var(--font-body); font-size: 14px; }
+  button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 14px; cursor: pointer; font-weight: 600; font-family: var(--font-body); }
+  button.secondary { background: var(--panel); color: var(--fg); border: 1px solid var(--border); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .samples { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sample { font-size: 12px; padding: 6px 10px; background: var(--panel); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; color: var(--muted); }
+  .sample:hover { color: var(--fg); border-color: var(--accent); }
+  .pipeline { display: grid; gap: 8px; }
+  .step { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; background: var(--panel); opacity: 0.45; transition: opacity 0.2s, border-color 0.2s; }
+  .step.active { opacity: 1; border-color: var(--accent); }
+  .step.done { opacity: 1; }
+  .step .name { font-family: var(--font-code); font-size: 12px; color: var(--accent); margin-bottom: 4px; }
+  .step pre { margin: 0; font-family: var(--font-code); font-size: 12px; white-space: pre-wrap; color: var(--muted); }
+  .step.done pre { color: var(--fg); }
+  .side { display: flex; flex-direction: column; gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .card h3 { margin: 0 0 8px; font-size: 14px; }
+  .kv { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; font-size: 12px; font-family: var(--font-code); }
+  .kv .k { color: var(--muted); }
+  .list { font-family: var(--font-code); font-size: 12px; display: grid; gap: 4px; }
+  .audit { max-height: 180px; overflow: auto; font-size: 12px; font-family: var(--font-code); }
+  .audit table { width: 100%; border-collapse: collapse; }
+  .audit td { padding: 4px 2px; border-bottom: 1px solid var(--border); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .dot.good { background: var(--good); }
+  .dot.warn { background: var(--warn); }
+  .dot.muted { background: var(--muted); }
+  .status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .memory { font-size: 12px; font-family: var(--font-code); display: grid; gap: 4px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-family: var(--font-code); }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 </head>
 <body>
 <div class="wrap">
-  <header class="hero">
-    <p class="eyebrow">Personal agent · on-device or EC2 · local-first</p>
-    <h1>HIM</h1>
-    <p class="thesis">A privacy-preserving personal agent with a deliberately small UI and an engineered harness: routing, environments, sandboxed execution, hybrid memory, and parallel sub-agents. No data leaves the boundary you choose.</p>
-    <div class="pill-row">
-      <span class="pill">Local-first</span>
-      <span class="pill">Boundary-respecting</span>
-      <span class="pill">RLM-style control flow</span>
-      <span class="pill">MCP tool bridge</span>
-      <span class="pill">Sandboxed REPL</span>
+  <header>
+    <div>
+      <h1>HIM — live demo</h1>
+      <div class="sub">privacy-preserving personal agent · harness in action</div>
     </div>
+    <div class="status"><span class="dot good"></span>local-first · no data leaves this browser</div>
   </header>
 
-  <section>
-    <h2>What it is</h2>
-    <p>HIM is a personal agent designed for ownership: the model, memory, tools, and conversation history run where you decide they run. The interface stays simple. The engineering sits in the harness that routes each query, sets up queryable environments instead of stuffing context into prompts, executes generated code in a sandbox, and fuses semantic and lexical retrieval. The result is an agent that handles large personal datasets without blowing up the parent context window or leaking data.</p>
-  </section>
-
-  <section>
-    <h2>Architecture</h2>
-    <div class="grid">
-      <div class="card"><div class="tag">01 · Routing</div><h3>Query Router</h3><p>Classifies each query by tool count, reasoning depth, privacy sensitivity, and complexity, then selects local, cloud, or recursive execution.</p></div>
-      <div class="card"><div class="tag">02 · Context</div><h3>Environment Manager</h3><p>Injects conversation history, memory, and preferences as queryable objects into the REPL globals. Data stays external to the prompt.</p></div>
-      <div class="card"><div class="tag">03 · Inference</div><h3>Model Executor</h3><p>Local Qwen 3 8B stays loaded in VRAM with an idle timeout. Cloud providers cascade on rate limits. Prompts stay near one thousand tokens.</p></div>
-      <div class="card"><div class="tag">04 · Execution</div><h3>Python REPL</h3><p>Sandboxed Docker container with seccomp, read-only filesystem, memory limit, and timeout. An answer dict persists across code blocks.</p></div>
-      <div class="card"><div class="tag">05 · Tools</div><h3>MCP Bridge</h3><p>Lazy-loads MCP servers as Python modules via a bridge with getattr hooks. Three concurrent servers max, LRU eviction after inactivity.</p></div>
-      <div class="card"><div class="tag">06 · Memory</div><h3>Hybrid Memory</h3><p>ChromaDB vectors plus SQLite FTS5, fused with reciprocal rank fusion. Handles paraphrase and exact identifiers in the same query.</p></div>
-      <div class="card"><div class="tag">07 · Scale</div><h3>Sub-Agent System</h3><p>Parallel isolated LLM workers via llm_batch. Each sees a single prompt, returns a summary, and never inherits parent history. Twenty-five to one compression.</p></div>
-      <div class="card"><div class="tag">08 · Audit</div><h3>Response Handler</h3><p>Formats output, stores the turn in both memory stores, and logs latency, model, tokens, cost, and success to an audit table.</p></div>
+  <div class="main">
+    <div class="panel chat">
+      <div class="samples" id="samples"></div>
+      <div class="messages" id="messages"></div>
+      <div class="inputrow">
+        <input id="q" type="text" placeholder="Ask HIM anything personal or complex…" />
+        <button id="run">Run</button>
+      </div>
     </div>
-  </section>
 
-  <section>
-    <h2>Query data flow</h2>
-    <div class="flow">
-      <pre class="mermaid">
-flowchart LR
-  U[User query] --> R[Query Router]
-  R --> E[Environment Manager]
-  E --> M[Model Executor]
-  M --> C[Generated code]
-  C --> P[Python REPL]
-  P --> B[MCP Bridge]
-  B --> T[Tools: mail, chat, files, calendar]
-  T --> P
-  P --> H[Response Handler]
-  H --> MEM[(Vector + Lexical Memory)]
-  H --> OUT[Answer to user]
-      </pre>
+    <div class="panel">
+      <div class="pipeline" id="pipeline"></div>
     </div>
-  </section>
+  </div>
 
-  <section>
-    <h2>Security layers</h2>
-    <div class="security-list">
-      <div class="security-item"><span class="dot"></span><div><strong>Docker isolation.</strong> Secomp-filtered container, read-only filesystem, two-hundred-fifty-megabyte tempfs, five-hundred-megabyte memory cap.</div></div>
-      <div class="security-item"><span class="dot"></span><div><strong>Network allowlist.</strong> Container reaches only MCP servers. No general outbound access from generated code.</div></div>
-      <div class="security-item"><span class="dot"></span><div><strong>Execution timeout.</strong> Thirty seconds per code block, one second MCP startup expectation, deterministic abort.</div></div>
-      <div class="security-item"><span class="dot"></span><div><strong>Credential hygiene.</strong> OAuth tokens live in the OS keyring. Environment variables are fallbacks only.</div></div>
-      <div class="security-item"><span class="dot"></span><div><strong>Resource cap.</strong> At most three concurrent MCP servers per session, LRU-evicted to stay within two to three gigabytes.</div></div>
+  <div class="side">
+    <div class="card">
+      <h3>Query router</h3>
+      <div class="kv" id="router"></div>
     </div>
-  </section>
-
-  <section>
-    <h2>Performance targets</h2>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Metric</th><th>Target</th><th>Rationale</th></tr></thead>
-        <tbody>
-          <tr><td>Simple query latency</td><td>less than 2 s</td><td>Feels instant for factual questions.</td></tr>
-          <tr><td>Complex query latency</td><td>less than 10 s</td><td>Acceptable for multi-step reasoning.</td></tr>
-          <tr><td>MCP server startup</td><td>less than 1 s</td><td>Lazy loading never blocks interaction.</td></tr>
-          <tr><td>Memory search</td><td>less than 100 ms</td><td>Fast enough to stay out of the critical path.</td></tr>
-          <tr><td>Sub-agent spawn</td><td>less than 500 ms</td><td>Overhead below parallelization benefit.</td></tr>
-          <tr><td>Local model load</td><td>less than 5 s</td><td>One-time cost, then persists in VRAM.</td></tr>
-          <tr><td>Cost per query</td><td>less than 0.01 USD</td><td>Sustainable at roughly one hundred queries per day.</td></tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <h3>Environment</h3>
+      <div class="list" id="env"></div>
     </div>
-  </section>
-
-  <section>
-    <h2>Tools in the loop</h2>
-    <div class="grid">
-      <div class="card"><h3>Gmail</h3><p>Search, read, send, labels. OAuth2 from keyring. Rate-limit aware.</p></div>
-      <div class="card"><h3>Slack</h3><p>Message search, threads, send. Bot or user OAuth.</p></div>
-      <div class="card"><h3>Calendar</h3><p>Events in ISO 8601 with timezone. Create, update, delete.</p></div>
-      <div class="card"><h3>Filesystem</h3><p>Read and write inside configured directories. Ten-megabyte file cap.</p></div>
-      <div class="card"><h3>GitHub</h3><p>Search repos, read files, list pull requests, create issues.</p></div>
-      <div class="card"><h3>Web search</h3><p>Brave Search fallback, plus fetch_url for page content.</p></div>
+    <div class="card">
+      <h3>Memory (hybrid)</h3>
+      <div class="memory" id="memory"></div>
     </div>
-  </section>
-
-  <section>
-    <h2>Roadmap</h2>
-    <p>Post-MVP directions: encrypted multi-device memory sync, proactive background analysis, voice interruption with streaming text-to-speech, a visual dashboard for memory and audit logs, a plugin system for community MCP servers, and federated encrypted memory sharing.</p>
-  </section>
-
-  <footer>
-    HIM is specified and documented at the architecture level. Implementation is staged module by module, starting with the router, environment manager, and sandboxed REPL.
-  </footer>
+    <div class="card">
+      <h3>Audit log</h3>
+      <div class="audit" id="audit"></div>
+    </div>
+    <div class="card">
+      <h3>Where to look</h3>
+      <div style="font-size:12px;color:var(--muted);">
+        <a href="showcase.html">architecture showcase</a> ·
+        <a href="https://github.com/id-19/him-showcase">source</a>
+      </div>
+    </div>
+  </div>
 </div>
 
+<script>
+
+const DATA = {
+  gmail: [
+    {from:'sarah@company.com', subject:'Q4 roadmap review', unread:true},
+    {from:'ops@company.com', subject:'Deploy window Friday', unread:true},
+    {from:'finance@company.com', subject:'Q3 expense report', unread:false},
+  ],
+  slack: [
+    {from:'sarah', text:'Can we move the roadmap sync?', unread:true},
+    {from:'theo', text:'PR #42 is ready', unread:true},
+    {from:'all-hands', text:'Weekly update posted', unread:false},
+  ],
+  filesystem: [
+    {path:'src/router.py', lines:210},
+    {path:'src/memory.py', lines:340},
+    {path:'src/repl.py', lines:180},
+    {path:'src/mcp_bridge.py', lines:120},
+  ],
+  calendar: [
+    {title:'Roadmap sync', start:'Tue 10:00', attendees:['sarah']},
+    {title:'Sprint planning', start:'Wed 14:00', attendees:['team']},
+    {title:'1:1 with manager', start:'Thu 09:30', attendees:['manager']},
+  ],
+  github: [
+    {repo:'me/project', title:'feat: hybrid memory fusion', state:'open'},
+    {repo:'me/project', title:'fix: repl timeout', state:'open'},
+  ],
+  web_search: [
+    {title:'RLM-style agent control flow', url:'docs/rlm'},
+    {title:'ChromaDB local embeddings', url:'docs/chroma'},
+  ],
+};
+
+const SAMPLES = [
+  "Find unread Slack DMs from yesterday, summarize them, and email the summary to my manager",
+  "Show my calendar for next week and flag conflicts with my project deadlines",
+  "Analyze the code quality of every file in ~/project/src and report the worst three",
+  "What did Sarah mention about the Q4 roadmap in our last three meetings?",
+  "Draft a reply to the top unread email, keep it under five sentences",
+];
+const messagesEl = document.getElementById('messages');
+const inputEl = document.getElementById('q');
+const runBtn = document.getElementById('run');
+const pipelineEl = document.getElementById('pipeline');
+const routerEl = document.getElementById('router');
+const envEl = document.getElementById('env');
+const memoryEl = document.getElementById('memory');
+const auditEl = document.getElementById('audit');
+const samplesEl = document.getElementById('samples');
+
+const STEPS = [
+  { id: 'route', name: '1. Query router', desc: 'classifying…' },
+  { id: 'env', name: '2. Environment manager', desc: 'injecting queryable objects…' },
+  { id: 'model', name: '3. Model executor', desc: 'generating code…' },
+  { id: 'repl', name: '4. Python REPL (sandboxed)', desc: 'executing…' },
+  { id: 'handle', name: '5. Response handler', desc: 'formatting, storing, auditing…' },
+];
+
+function renderPipeline() {
+  pipelineEl.innerHTML = STEPS.map(s => `
+    <div class="step" id="step-${s.id}">
+      <div class="name">${s.name}</div>
+      <pre id="step-${s.id}-txt">${s.desc}</pre>
+    </div>`).join('');
+}
+renderPipeline();
+
+samplesEl.innerHTML = SAMPLES.map((s,i)=>`<span class="sample" data-i="${i}">${s.slice(0,46)}…</span>`).join('');
+samplesEl.addEventListener('click', e => {
+  const i = e.target?.dataset?.i;
+  if (i != null) { inputEl.value = SAMPLES[i]; inputEl.focus(); }
+});
+
+const MEMORY_KEY = 'him_demo_memory';
+const AUDIT_KEY = 'him_demo_audit';
+function loadMem() { try { return JSON.parse(localStorage.getItem(MEMORY_KEY)||'[]'); } catch { return []; } }
+function saveMem(v){ try { localStorage.setItem(MEMORY_KEY, JSON.stringify(v)); } catch {} }
+function loadAudit(){ try { return JSON.parse(localStorage.getItem(AUDIT_KEY)||'[]'); } catch { return []; } }
+function saveAudit(v){ try { localStorage.setItem(AUDIT_KEY, JSON.stringify(v)); } catch {} }
+
+function addMsg(role, html) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + role;
+  d.innerHTML = `<div class="label">${role === 'user' ? 'you' : 'him'}</div>${html}`;
+  messagesEl.appendChild(d);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+function setStep(id, state, text) {
+  const el = document.getElementById('step-' + id);
+  el.classList.remove('active','done');
+  el.classList.add(state);
+  const t = document.getElementById('step-' + id + '-txt');
+  if (text != null) t.textContent = text;
+}
+function resetSteps() { STEPS.forEach(s => setStep(s.id, '', s.desc.replace('…',''))); }
+
+function analyze(q) {
+  const l = q.toLowerCase();
+  const tools = [];
+  if (/email|mail|gmail/.test(l)) tools.push('gmail');
+  if (/slack|dm/.test(l)) tools.push('slack');
+  if (/file|director|src|code/.test(l)) tools.push('filesystem');
+  if (/calendar|event|week|meeting/.test(l)) tools.push('calendar');
+  if (/github|repo|pull/.test(l)) tools.push('github');
+  if (/search|web|roadmap/.test(l)) tools.push('web_search');
+  const privacy = tools.length > 0 || /my |personal/i.test(q) ? 3 : 0;
+  const reasoning = /and |summar|flag|analy/i.test(l) ? 2 : 1;
+  const complexity = tools.length + reasoning + (privacy > 0 ? 3 : 0);
+  let executor, reason;
+  if (privacy > 0) { executor = 'local'; reason = 'personal data forces local execution'; }
+  else if (complexity <= 3) { executor = 'cloud'; reason = 'simple, no personal data'; }
+  else if (complexity <= 6) { executor = 'local'; reason = 'moderate complexity'; }
+  else { executor = 'recursive'; reason = 'multi-step decomposition'; }
+  return { tools, privacy, reasoning, complexity, executor, reason };
+}
+
+function genCode(a, q) {
+  const imports = a.tools.length ? `from mcp import ${a.tools.join(', ')}` : '';
+  return `${imports}
+from tools import llm_batch
+from environment import conversation_history, memory, preferences
+
+query = ${JSON.stringify(q)}
+# Route: ${a.executor} · tools=${a.tools.join(',')||'none'}
+answer = {"content": "", "ready": False}
+
+# LLM decides what to fetch (selective attention)
+${a.tools.map(t => {
+  if (t === 'gmail') return "emails = gmail.search(query=query, after='yesterday')";
+  if (t === 'slack') return "dms = slack.search_messages(channel_type='dm', is_unread=True)";
+  if (t === 'filesystem') return "files = filesystem.list_directory('~/project/src')";
+  if (t === 'calendar') return "events = calendar.list_events(start='next week', end='+7d')";
+  if (t === 'github') return "prs = github.list_prs(repo='me/project', state='open')";
+  if (t === 'web_search') return "results = web_search.search(query=query, num_results=10)";
+}).join('\n')}
+
+${a.tools.length >= 2 ? `# Parallel sub-agents summarize large outputs
+summaries = llm_batch([f"Summarize: {x}" for x in [${a.tools.map(t=>t+'_item').join(', ')}]])` : '# Single-step aggregation'}
+answer["content"] = "HIM processed " + str(len(${a.tools.length? a.tools[0] : '[]'})) + " records and composed a concise answer."
+answer["ready"] = True`;
+}
+
+function mockResult(a, q) {
+  const toolNames = a.tools.length ? a.tools : ['memory'];
+  const collected = toolNames.map(t => {
+    const rows = DATA[t] || [];
+    const picked = rows.filter(r => r.unread !== false).slice(0, 4);
+    const names = picked.map(r => r.subject || r.text || r.path || r.title).join('; ');
+    return `${t}: ${picked.length}/${rows.length} matched — ${names}`;
+  });
+  const verb = a.executor === 'cloud' ? 'cloud (gpt-5-mini)' : a.executor === 'recursive' ? 'recursive + 3 sub-agents' : 'local (qwen3-8b)';
+  const first = toolNames[0];
+  const sample = (DATA[first]||[]).filter(r=>r.unread!==false)[0];
+  const sampleName = sample ? (sample.subject || sample.text || sample.path || sample.title) : 'the relevant item';
+  return `HIM finished · executor=${verb} · tools=${toolNames.join(',')}
+
+Tool output:
+${collected.join('\n')}
+
+Composed reply: I found ${collected.reduce((n,c)=>n+parseInt((c.match(/(\d+)\//)||[0,0])[1],10),0)} relevant items. The most important is "${sampleName}". I drafted a short summary and noted it in memory for next time. Parent context stayed under 4k tokens; full details stayed inside the REPL.`;
+}
+
+let running = false;
+async function run() {
+  if (running) return;
+  const q = inputEl.value.trim();
+  if (!q) return;
+  running = true; runBtn.disabled = true;
+  resetSteps();
+  addMsg('user', escapeHtml(q));
+  inputEl.value = '';
+
+  const a = analyze(q);
+  // step route
+  setStep('route', 'active', `tools=${a.tools.join(',')||'none'} · privacy=${a.privacy} · reasoning=${a.reasoning} · complexity=${a.complexity}`);
+  routerEl.innerHTML = `
+    <span class="k">tools_needed</span><span>${a.tools.length}</span>
+    <span class="k">reasoning_depth</span><span>${a.reasoning}</span>
+    <span class="k">privacy_sensitive</span><span>${a.privacy}</span>
+    <span class="k">complexity</span><span>${a.complexity}</span>
+    <span class="k">executor</span><span><span class="badge">${a.executor}</span></span>
+    <span class="k">reason</span><span>${a.reason}</span>`;
+  await delay(450);
+  setStep('route', 'done', `Decision: ${a.executor} execution (mode=code) — ${a.reason}`);
+
+  // env
+  setStep('env', 'active', 'building queryable objects…');
+  envEl.innerHTML = [
+    'conversation_history → search(), get_last(), get_range()',
+    'memory → search(mode="hybrid")',
+    'preferences → get(key), set(key, value)',
+    'answer → {"content": "", "ready": false}',
+  ].map(x => `<div>${x}</div>`).join('');
+  await delay(400);
+  setStep('env', 'done', 'Injected 4 objects into REPL globals. Data never enters prompt.');
+
+  // model
+  setStep('model', 'active', 'generating Python…');
+  const code = genCode(a, q);
+  await delay(600);
+  setStep('model', 'done', 'Generated ' + code.split('\n').length + ' lines. Prompt stayed ~1k tokens.');
+
+  // repl
+  setStep('repl', 'active', 'running in Docker sandbox…');
+  await delay(700);
+  const result = mockResult(a, q);
+  setStep('repl', 'done', `Execution finished · ${(a.tools.length||1)} MCP call(s) · ${a.tools.length? a.tools.map(t=>(DATA[t]||[]).length).reduce((x,y)=>x+y,0) : 3} rows scanned · 30s timeout respected.`);
+
+  // handle
+  setStep('handle', 'active', 'storing turn, writing audit…');
+  const mem = loadMem();
+  mem.unshift({ q, tools: a.tools, model: a.executor, ts: new Date().toLocaleTimeString() });
+  if (mem.length > 8) mem.pop();
+  saveMem(mem);
+  renderMemory(mem);
+  const audit = loadAudit();
+  audit.unshift({ ts: new Date().toLocaleTimeString(), tools: a.tools.join(',')||'—', model: a.executor, ms: 400 + Math.round(Math.random()*600), ok: true });
+  if (audit.length > 12) audit.pop();
+  saveAudit(audit);
+  renderAudit(audit);
+  await delay(300);
+  setStep('handle', 'done', 'Turn stored in vector + lexical memory. Audit row appended.');
+
+  addMsg('assistant', escapeHtml(result));
+  running = false; runBtn.disabled = false;
+}
+function delay(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function escapeHtml(s){ return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function renderMemory(mem){
+  memoryEl.innerHTML = mem.length ? mem.map(m=>`<div><span class="badge">${m.model}</span> ${escapeHtml(m.q.slice(0,58))}… <span style="color:var(--muted)">${m.ts}</span></div>`).join('') : '<div style="color:var(--muted)">no turns yet</div>';
+}
+function renderAudit(audit){
+  auditEl.innerHTML = '<table>' + audit.map(r=>`<tr><td>${r.ts}</td><td>${r.tools}</td><td>${r.model}</td><td>${r.ms}ms</td><td><span class="dot good"></span></td></tr>`).join('') + '</table>';
+  if (!audit.length) auditEl.innerHTML = '<div style="color:var(--muted)">no entries yet</div>';
+}
+
+renderMemory(loadMem());
+renderAudit(loadAudit());
+runBtn.addEventListener('click', run);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+</script>
 </body>
 </html>
